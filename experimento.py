@@ -9,6 +9,7 @@ COMO O EXPERIMENTO FUNCIONA (ver rodar_experimento, no fim do arquivo)
     4. Usa só a calibração para escolher o limiar e a amostra mínima.
     5. Mede detecção e falso positivo nas imagens que não participaram da escolha.
     6. Faz comparações que explicam os resultados: fórmulas, passos, tipo de mensagem e RGB.
+    7. Mede o PSNR entre cada imagem com mensagem e sua cobertura.
 """
 
 import io
@@ -372,6 +373,39 @@ def curva_payload(covers: list[np.ndarray], limiar: float, pct_minimo: float, re
     return curva, por_imagem
 
 
+# ---------- Imperceptibilidade ----------
+def psnr(original: np.ndarray, alterada: np.ndarray) -> float:
+    """PSNR em dB entre duas imagens de 8 bits: quanto maior, menor a diferença entre elas."""
+    # float64 evita o erro clássico: em uint8, 3 - 5 daria 254 em vez de -2.
+    mse = float(np.mean((original.astype(np.float64) - alterada.astype(np.float64)) ** 2))
+    return float("inf") if mse == 0 else 10.0 * float(np.log10(255.0**2 / mse))
+
+
+def medir_psnr(covers: list[np.ndarray], repeticoes: int) -> list[dict]:
+    """Mede a imperceptibilidade de cada cenário com mensagem, comparando stego e cover.
+
+    Previsão: com taxa α, metade dos pixels usados muda em 1 nível, então MSE = α/2 e
+    PSNR = 10·log10(255² · 2/α), o que dá cerca de 51 dB com α = 1.
+    """
+    linhas = []
+    for j, cenario in enumerate(c for c in CENARIOS_PROJETO if c.metodo is not None):
+        valores = [
+            psnr(cover, cenario.aplicar(cover, semente(800, i, j, r)))
+            for i, cover in enumerate(covers)
+            for r in range(repeticoes)
+        ]
+        linhas.append(
+            {
+                "cenario": cenario.nome,
+                "execucoes": len(valores),
+                "psnr_medio_db": float(np.mean(valores)),
+                "psnr_minimo_db": float(np.min(valores)),
+                "psnr_previsto_db": 10.0 * float(np.log10(255.0**2 * 2.0 / cenario.taxa)),
+            }
+        )
+    return linhas
+
+
 # ---------- Comparações metodológicas ----------
 def comparar_formulas(covers: list[np.ndarray], repeticoes: int) -> list[dict]:
     """Mostra o que cada fórmula entrega na imagem inteira, limpa e com inserção completa."""
@@ -591,6 +625,7 @@ def rodar_experimento(
     avisar("Medindo a curva de payload e a previsão teórica...")
     tabelas["curva_payload"], tabelas["taxa_critica_por_imagem"] = curva_payload(covers, limiar, pct_minimo, repeticoes, passos)
     avisar("Comparando fórmulas, frequência mínima, passos, tipo de mensagem e RGB...")
+    tabelas["psnr"] = medir_psnr(covers, repeticoes)
     tabelas["comparacao_formulas"] = comparar_formulas(covers, repeticoes)
     tabelas["comparacao_min_esperado"] = comparar_min_esperado(covers, limiar, pct_minimo, repeticoes, passos)
     tabelas["comparacao_passos"] = comparar_passos(covers, limiar, pct_minimo, repeticoes)

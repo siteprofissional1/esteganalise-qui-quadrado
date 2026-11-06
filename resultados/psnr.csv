@@ -1,0 +1,7 @@
+cenario,execucoes,psnr_medio_db,psnr_minimo_db,psnr_previsto_db
+LSB sequencial (10%),120,61.1386,61.0831,61.1411
+LSB sequencial (50%),120,54.1513,54.1236,54.1514
+LSB sequencial (100%),120,51.1402,51.124,51.1411
+LSB pseudoaleatório (10%),120,61.1398,61.0701,61.1411
+LSB pseudoaleatório (50%),120,54.1503,54.1305,54.1514
+LSB pseudoaleatório (100%),120,51.1419,51.1246,51.1411

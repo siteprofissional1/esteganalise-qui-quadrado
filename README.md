@@ -29,6 +29,24 @@ python main.py --analisar imagens/exemplos/pseudoaleatorio_50.png
 | `pseudoaleatorio_10.png`, `pseudoaleatorio_50.png` | sem evidência: é a limitação do teste, não um erro do programa |
 | `pseudoaleatorio_100.png` | suspeita |
 
+### Cuidado ao demonstrar com uma mensagem própria
+
+O teste supõe bits uniformes, como os de uma mensagem cifrada. Por isso, uma mensagem em **texto puro** ou **muito curta** resulta em "sem evidência", mesmo com a mensagem escondida. Isso é um limite do método, medido na seção 5.5 do relatório, e não um erro do programa:
+
+| Mensagem (imagem `limpa.png`) | Sequencial | Pseudoaleatório |
+| :--- | :--- | :--- |
+| `dados/mensagem.txt`, cerca de 0,5% da imagem | sem evidência | sem evidência |
+| Texto puro, 50% da imagem | sem evidência | sem evidência |
+| Bytes aleatórios (simulam cifra), 50% da imagem | **suspeita** | sem evidência |
+
+Para mostrar uma detecção, use `imagens/exemplos/sequencial_50.png` ou uma mensagem de bytes aleatórios:
+
+```bash
+python -c "import os; open('cifrada.bin', 'wb').write(os.urandom(24000))"
+python main.py --inserir imagens/exemplos/limpa.png --saida stego.png --mensagem cifrada.bin
+python main.py --analisar stego.png
+```
+
 ## Reproduzir o experimento
 
 ```bash

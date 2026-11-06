@@ -17,7 +17,7 @@ sys.path.insert(0, str(RAIZ))
 
 from chi_square import calcular_povs, decidir, teste_chi_quadrado, varredura_cumulativa  # noqa: E402
 from entrada import carregar_para_analise  # noqa: E402
-from experimento import CENARIOS_PROJETO, gerar_imagem_sintetica, taxa_critica  # noqa: E402
+from experimento import CENARIOS_PROJETO, gerar_imagem_sintetica, psnr, taxa_critica  # noqa: E402
 import main as cli  # noqa: E402
 from lsb import extrair_mensagem, inserir_lsb_pseudoaleatorio, inserir_lsb_sequencial, inserir_mensagem  # noqa: E402
 from preparar_dados import COVER_EXEMPLO, PASTA_EXEMPLOS, PASTA_KODAK, imagem_exemplo, nome_exemplo  # noqa: E402
@@ -188,6 +188,25 @@ def test_taxa_critica_recupera_o_ponto_de_p_igual_ao_limiar():
     restante = (1 - alfa) ** 2
     previsto = restante * chi2_0 + (1 - restante) * k / 2
     assert chi2.sf(previsto, k - 1) == pytest.approx(limiar)
+
+
+# ---------- PSNR ----------
+def test_psnr_calculado_a_mao():
+    # Todos os pixels diferem em 1 nível: MSE = 1 e PSNR = 10·log10(255²) = 48,13 dB.
+    a = np.full((8, 8), 100, dtype=np.uint8)
+    assert psnr(a, a + 1) == pytest.approx(48.1308, abs=1e-3)
+    # A diferença não pode dar a volta no uint8: 100 - 101 é -1, e não 255.
+    assert psnr(a + 1, a) == pytest.approx(48.1308, abs=1e-3)
+
+
+def test_psnr_de_imagens_iguais_e_infinito():
+    a = gerar_imagem_sintetica(16, 16)
+    assert psnr(a, a) == float("inf")
+
+
+def test_psnr_da_insercao_completa_coincide_com_a_previsao():
+    imagem = gerar_imagem_sintetica(256, 256)
+    assert psnr(imagem, inserir_lsb_pseudoaleatorio(imagem, 1.0, seed=4)) == pytest.approx(51.14, abs=0.05)
 
 
 # ---------- Leitura e CLI ----------

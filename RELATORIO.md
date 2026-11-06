@@ -8,7 +8,9 @@
 
 ## 1. Introdução
 
-A esteganografia LSB troca o bit menos significativo dos pixels pelos bits de uma mensagem. A mudança é invisível, mas altera o histograma da imagem de um jeito previsível. O ataque do Qui-Quadrado de Westfeld e Pfitzmann [1] explora essa alteração para decidir se uma imagem contém mensagem oculta.
+A esteganografia busca esconder a própria existência de uma comunicação. O modelo clássico é o problema dos prisioneiros [2]: Alice e Bob trocam mensagens sob a vigilância de Wendy, e a comunicação só tem sucesso se Wendy nem desconfiar dela. A esteganálise é o lado de Wendy: decidir se uma imagem contém mensagem, mesmo sem conseguir lê-la.
+
+A técnica LSB transforma uma imagem de cobertura (*cover*) em uma imagem com mensagem (*stego*), trocando o bit menos significativo dos pixels pelos bits da mensagem. A mudança é invisível, mas altera o histograma de um jeito previsível. O ataque do Qui-Quadrado de Westfeld e Pfitzmann [1] explora essa alteração. Ele pertence à classe SDSS (*Spatial Domain Steganalytic Systems*), que analisa imagens sem compressão no domínio espacial [8, 9].
 
 Este trabalho implementa esse ataque do zero, com NumPy e SciPy, e o avalia em imagens reais sem compressão. Além de medir a detecção, medimos o falso positivo em vários tipos de imagem limpa, porque um detector só é útil se soubermos quando ele erra.
 
@@ -80,7 +82,7 @@ O $\chi^2_0$ da imagem limpa é enorme em relação a $K$. Nas nossas imagens, a
 | [`graficos_exp.py`](graficos_exp.py) | Gráficos |
 | [`preparar_dados.py`](preparar_dados.py) | Baixa e confere as imagens e gera os exemplos |
 | [`main.py`](main.py) | Linha de comando |
-| [`tests/test_projeto.py`](tests/test_projeto.py) | 40 testes automatizados |
+| [`tests/test_projeto.py`](tests/test_projeto.py) | 43 testes automatizados |
 
 As instruções de execução estão no [`README.md`](README.md).
 
@@ -212,6 +214,20 @@ Nas 24 imagens em RGB:
 
 A conversão para cinza mistura os canais e apaga o sinal: nenhuma mensagem foi detectada.
 
+### 5.7 Imperceptibilidade (PSNR)
+
+O PSNR mede o quanto a inserção alterou a imagem; quanto maior, menor a diferença. Comparamos cada imagem *stego* com sua *cover*, nas 24 imagens com 5 sementes:
+
+| Payload | Previsto | Sequencial (médio) | Pseudoaleatório (médio) | Menor valor medido |
+| :--- | ---: | ---: | ---: | ---: |
+| 10% | 61,14 dB | 61,14 dB | 61,14 dB | 61,07 dB |
+| 50% | 54,15 dB | 54,15 dB | 54,15 dB | 54,12 dB |
+| 100% | 51,14 dB | 51,14 dB | 51,14 dB | 51,12 dB |
+
+A previsão vem de MSE = $\alpha/2$: só metade dos pixels usados muda, e sempre em 1 nível. Mesmo com a capacidade total, o resultado fica bem acima dos 40 dB citados em aula como valor normalmente aceitável [9].
+
+O PSNR depende da taxa, não do método, então os dois métodos são igualmente discretos a olho nu. Mesmo assim, o sequencial e a inserção completa são detectados pelo $\chi^2$. Essa é a diferença entre visibilidade e imperceptibilidade estatística: PSNR alto mostra que a mudança não aparece na imagem, mas não que ela passa despercebida na estatística.
+
 ---
 
 ## 6. Discussão
@@ -228,7 +244,7 @@ A taxa de falso positivo depende do tipo de imagem, e o resultado favorável em 
 - A varredura sempre começa no primeiro pixel. Não testamos mensagens sequenciais que comecem no meio da imagem.
 - Os limiares foram calibrados para estas imagens e este tamanho. Outras fontes de imagem exigem nova calibração.
 
-**Diferença em relação à apostila.** A Atividade 28.7 da apostila usa outra estatística: compara a contagem total de LSBs iguais a 0 e a 1 e considera suspeito um $\chi^2$ *alto*. Este projeto pede o teste de PoVs, em que a inserção *reduz* o $\chi^2$, pois os bits uniformes aproximam os pares. As duas abordagens não são equivalentes, e por isso não usamos aquele código como base.
+**Diferença em relação à apostila.** A Atividade 28.7 da apostila [8] usa outra estatística: compara a contagem total de LSBs iguais a 0 e a 1 e considera suspeito um $\chi^2$ *alto*. Este projeto pede o teste de PoVs, em que a inserção *reduz* o $\chi^2$, pois os bits uniformes aproximam os pares. As duas abordagens não são equivalentes, e por isso não usamos aquele código como base.
 
 ---
 
@@ -256,6 +272,7 @@ Em atendimento à seção 1.7 das orientações, declaramos que usamos o Claude 
 6. T. Pevný, P. Bas e J. Fridrich. *Steganalysis by Subtractive Pixel Adjacency Matrix*. IEEE Transactions on Information Forensics and Security, 5(2), a partir da p. 215, 2010. DOI: 10.1109/TIFS.2010.2045842.
 7. Kodak Lossless True Color Image Suite. Disponível em: https://r0k.us/graphics/kodak/.
 8. J. B. Lima, C. L. Matos, G. L. Pereira e S. M. L. Lima. *Apostila da disciplina*, capítulos 25 a 30.
+9. J. B. Lima. *Aula de Ocultação de Dados*, 24 out. 2026. Gravação disponibilizada no Classroom da disciplina.
 
 ---
 

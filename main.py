@@ -156,6 +156,10 @@ def rodar(pasta_covers: Path, repeticoes: int, passos: int) -> None:
             f"  IC 95%: {linha['ic95_inf']:.0%} a {linha['ic95_sup']:.0%}"
         )
 
+    print("\nImperceptibilidade: PSNR entre a imagem com mensagem e a cobertura")
+    for linha in resultados.tabelas["psnr"]:
+        print(f"{linha['cenario']:<32} médio: {linha['psnr_medio_db']:.2f} dB  mínimo: {linha['psnr_minimo_db']:.2f} dB")
+
     # Avisa se a calibração passar a discordar dos valores fixados em chi_square.py.
     if (resultados.limiar, resultados.pct_minimo) != (LIMIAR_PADRAO, PCT_MINIMO_PADRAO):
         print(
