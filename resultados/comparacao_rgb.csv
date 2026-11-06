@@ -1,0 +1,5 @@
+caso,imagens,suspeitas_por_canal,suspeitas_convertendo_para_cinza
+Limpa,24,0,0
+"Pseudoaleatório 100%, intercalado",24,24,0
+"Sequencial 50%, intercalado",24,24,0
+"Pseudoaleatório 100%, só canal azul",24,24,0

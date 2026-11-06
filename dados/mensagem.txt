@@ -1,0 +1,3 @@
+Mensagem fictícia de teste do Projeto 3 da disciplina de Ocultação de Dados.
+Alice combina com Bob o horário da reunião sem que Wendy perceba a troca de mensagens.
+O objetivo deste arquivo é apenas demonstrar a inserção, a extração e a detecção.

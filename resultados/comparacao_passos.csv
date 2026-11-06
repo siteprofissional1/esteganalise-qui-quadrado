@@ -1,0 +1,7 @@
+cenario,sem_minimo_10_passos,sem_minimo_100_passos,com_minimo_100_passos,sem_minimo_1000_passos
+Limpa,0,0,0,0
+LSB sequencial (0.5%),0,0,0,0.116667
+LSB sequencial (1%),0,0.366667,0,0.483333
+LSB sequencial (2%),0,0.541667,0,0.675
+LSB sequencial (5%),0,0.725,0,0.8
+LSB sequencial (10%),0.7,0.816667,0.7,0.866667

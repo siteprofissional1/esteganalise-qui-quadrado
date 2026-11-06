@@ -1,0 +1,5 @@
+formula,cenario,execucoes,chi2_sobre_k_mediana,p_q05,p_mediana,p_q95,fracao_p_abaixo_0_05
+classica,Limpa,24,104,0,0,0,1
+classica,LSB pseudoaleatório (100%),120,0.497853,0.999786,0.999999,1,0
+pearson,Limpa,24,208,0,0,0,1
+pearson,LSB pseudoaleatório (100%),120,0.995705,0.0507601,0.497051,0.911533,0.05

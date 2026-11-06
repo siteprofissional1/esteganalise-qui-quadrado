@@ -1,0 +1,4 @@
+taxa,imagens,fracao_de_uns_no_texto,suspeitas_bits_uniformes,suspeitas_texto_puro,p_max_mediano_uniforme,p_max_mediano_texto
+0.1,24,0.454942,20,0,0.999957,9.91428e-10
+0.5,24,0.454942,24,0,1,7.69264e-12
+1,24,0.454942,24,0,1,7.69264e-12

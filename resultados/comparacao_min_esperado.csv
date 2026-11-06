@@ -1,0 +1,7 @@
+min_esperado,cenario,execucoes,taxa_suspeitas,p_minimo_primeiro_passo
+1,Limpa,24,0,3.97726e-284
+1,LSB sequencial (10%),120,0.783333,0.264275
+1,LSB pseudoaleatório (100%),120,1,0.676529
+5,Limpa,24,0,3.65319e-295
+5,LSB sequencial (10%),120,0.675,0.291714
+5,LSB pseudoaleatório (100%),120,1,0.587075

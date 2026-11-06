@@ -1,0 +1,8 @@
+cenario,execucoes,imagens,suspeitas_varredura,taxa_varredura,suspeitas_imagem_inteira,taxa_imagem_inteira,p_mediano_100pct,erro_medio_fim_pontos_pct
+Limpa,24,24,0,0,0,0,0,nan
+LSB sequencial (10%),120,24,81,0.675,0,0,0,0.284041
+LSB sequencial (50%),120,24,120,1,0,0,0,1.59183
+LSB sequencial (100%),120,24,120,1,116,0.966667,0.999999,0.816663
+LSB pseudoaleatório (10%),120,24,0,0,0,0,0,nan
+LSB pseudoaleatório (50%),120,24,0,0,0,0,0,nan
+LSB pseudoaleatório (100%),120,24,120,1,118,0.983333,0.999999,nan

@@ -1,0 +1,9 @@
+classe,imagens,falsos_positivos,fpr,ic95_inf,ic95_sup,falsos_positivos_sem_amostra_minima,falsos_positivos_so_imagem_inteira
+Naturais (Kodak),24,0,0,0,0.142474,0,0
+Reduzidas a 50% (bicúbica),24,1,0.0416667,0.00105435,0.211202,3,0
+JPEG q=90 decodificado,24,0,0,0,0.142474,1,0
+Ruído gaussiano σ=1,24,0,0,0,0.142474,0,0
+Ruído gaussiano σ=2,24,0,0,0,0.142474,1,0
+Ruído gaussiano σ=5,24,1,0.0416667,0.00105435,0.211202,10,0
+Ruído gaussiano σ=10,24,4,0.166667,0.0473536,0.373842,9,0
+Sintéticas suaves,24,1,0.0416667,0.00105435,0.211202,23,0
