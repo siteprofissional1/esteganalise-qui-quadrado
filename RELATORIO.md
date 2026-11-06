@@ -1,7 +1,13 @@
 # Projeto 3 — Esteganálise Estatística Espacial: Teste do Qui-Quadrado ($\chi^2$) e Pares de Valores
 
 **Disciplina:** Ocultação de Dados — Especialização Lato Sensu
-**Integrantes:** [preencher os nomes]
+**Integrantes:**
+
+- AILTON XAVIER
+- GUILHERME GOMES LOURENCO
+- ROBERTO FARIAS DOS SANTOS
+- VICTOR CESAR SAN MIGUEL BUZZO
+
 **Data:** [preencher]
 
 ---
